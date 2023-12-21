@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        .level {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .level.active {
+            display: block;
+        }
+
+        .question {
+            margin: 10px 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: 50px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Primary School Math Quiz</h1>
+
+    <!-- Basic Level -->
+    <div class="level active" id="basic">
+        <h2>Basic Level</h2>
+        <div class="question">
+            <label for="basic-1">1 + 1 = </label>
+            <input type="text" id="basic-1">
+        </div>
+        <div class="question">
+            <label for="basic-2">6 - 4 = </label>
+            <input type="text" id="basic-2">
+        </div>
+        <button onclick="checkAnswers('basic')">Submit Basic Level</button>
+    </div>
+
+    <!-- Intermediate Level -->
+    <div class="level" id="intermediate">
+        <h2>Intermediate Level</h2>
+        <div class="question">
+            <label for="intermediate-1">11 + 2 = </label>
+            <input type="text" id="intermediate-1">
+        </div>
+        <div class="question">
+            <label for="intermediate-2">19 - 8 = </label>
+            <input type="text" id="intermediate-2">
+        </div>
+        <button onclick="checkAnswers('intermediate')">Submit Intermediate Level</button>
+    </div>
+
+    <!-- Advanced Level -->
+    <div class="level" id="advanced">
+        <h2>Advanced Level</h2>
+        <div class="question">
+            <label for="advanced-1">9 + 9 = </label>
+            <input type="text" id="advanced-1">
+        </div>
+        <div class="question">
+            <label for="advanced-2">7 + 8 = </label>
+            <input type="text" id="advanced-2">
+        </div>
+        <div class="question">
+            <label for="advanced-3">5 + 6 = </label>
+            <input type="text" id="advanced-3">
+        </div>
+        <button onclick="checkAnswers('advanced')">Submit Advanced Level</button>
+    </div>
+
+    <script>
+        function checkAnswers(level) {
+            var correctAnswers = {
+                'basic': ['2', '2'],
+                'intermediate': ['13', '11'],
+                'advanced': ['18', '15', '11']
+            };
+
+            var allCorrect = true;
+            var allIncorrect = true;
+            var levelQuestions = document.querySelectorAll('#' + level + ' .question input');
+            levelQuestions.forEach(function(input, index) {
+                if (input.value === correctAnswers[level][index]) {
+                    allIncorrect = false;
+                } else {
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                alert('Correct! Moving to the next level.');
+                moveToNextLevel(level);
+            } else if (allIncorrect && level !== 'basic') {
+                alert('All answers are incorrect. Moving back to the previous level.');
+                moveToPreviousLevel(level);
+            } else {
+                alert('Some answers are incorrect. Try again!');
+            }
+        }
+
+        function moveToNextLevel(currentLevel) {
+            var nextLevel;
+            switch(currentLevel) {
+                case 'basic': nextLevel = 'intermediate'; break;
+                case 'intermediate': nextLevel = 'advanced'; break;
+                case 'advanced': alert('Congratulations! You have completed all levels.'); return;
+            }
+            document.getElementById(currentLevel).classList.remove('active');
+            document.getElementById(nextLevel).classList.add('active');
+        }
+
+        function moveToPreviousLevel(currentLevel) {
+            var previousLevel;
+            switch(currentLevel) {
+                case 'intermediate': previousLevel = 'basic'; break;
+                case 'advanced': previousLevel = 'intermediate'; break;
+            }
+            document.getElementById(currentLevel).classList.remove('active');
+            document.getElementById(previousLevel).classList.add('active');
+        }
+    </script>
+</body>
+</html>
